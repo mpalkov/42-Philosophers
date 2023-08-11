@@ -13,9 +13,10 @@ void	*th_routine(void *data)
 	return (NULL);
 }
 
-void	test_time(void)
+void	*test_time(void *unused)
 {
-	struct timeval	tp;	
+	(void)unused;
+	struct timeval	tp;
 	int	i;
 
 	i = 0;
@@ -26,22 +27,26 @@ void	test_time(void)
 		sleep(1);
 		++i;
 	}
-	return ;
+	return (NULL);
 }
 
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
 	pthread_t	t1;
 	pthread_t	t2;
 	pthread_t	t3;
+
+	printf("sizeof pthread_t: %lu\nsizeof pointer: %lu\n--------\n\n", sizeof(pthread_t), sizeof(void *));
 
 	pthread_create(&t1, NULL, th_routine, NULL);
 	printf("MAIN: created t1 [%p]\n", t1);	
 	pthread_create(&t2, NULL, th_routine, NULL);
 	printf("MAIN: created t2 [%p]\n", t2);
 	
-	pthread_create(&t3, NULL, th_routine, NULL);
+	pthread_create(&t3, NULL, test_time, NULL);
 	printf("MAIN: created t3 [%p]\n", t3);
 	
 
@@ -54,6 +59,5 @@ int	main(void)
 	printf("MAIN: joining t3 [%p]\n", t3);
 	pthread_join(t3, NULL);
 	
-
 	return (0);
 }

@@ -11,6 +11,15 @@
 			"program": "${workspaceFolder}/a.out",
 			"args": [],
 			"cwd": "${workspaceFolder}"
+			
+		}
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "args 200 500 300",
+			"program": "${workspaceFolder}/a.out",
+			"args": [200, 300, 500],
+			"cwd": "${workspaceFolder}"
 		}
 	]
 }
