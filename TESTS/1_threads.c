@@ -9,7 +9,9 @@ void	*th_routine(void *data)
 
 	(void)data;	
 	tid = pthread_self();
-	printf("[%p]\n", tid);
+	printf("[%p] routine started\n", tid);
+	sleep(1);
+	printf("[%p] routine finished\n", tid);
 	return (NULL);
 }
 
@@ -18,6 +20,7 @@ void	*test_time(void *unused)
 	(void)unused;
 	struct timeval	tp;
 	int	i;
+	printf("testtime started\n");
 
 	i = 0;
 	while (i < 10)
@@ -27,9 +30,9 @@ void	*test_time(void *unused)
 		sleep(1);
 		++i;
 	}
+	printf("testtime finished\n");
 	return (NULL);
 }
-
 
 int	main(int argc, char **argv)
 {
@@ -48,16 +51,19 @@ int	main(int argc, char **argv)
 	
 	pthread_create(&t3, NULL, test_time, NULL);
 	printf("MAIN: created t3 [%p]\n", t3);
-	
+	printf("argc = %d\n", ++argc);
 
-	printf("MAIN: joining t1 [%p]\n", t1);
-	pthread_join(t1, NULL);
-	
-	printf("MAIN: joining t2 [%p]\n", t2);
-	pthread_join(t2, NULL);
-	
-	printf("MAIN: joining t3 [%p]\n", t3);
 	pthread_join(t3, NULL);
+	printf("MAIN: t3 joined[%p]\n", t3);	
+	printf("argc = %d\n", ++argc);
+	pthread_join(t1, NULL);
+	printf("MAIN: t1 joined [%p]\n", t1);
+	printf("argc = %d\n", ++argc);
+	
+	pthread_join(t2, NULL);
+	printf("MAIN: t2 joined [%p]\n", t2);
+	printf("argc = %d\n", ++argc);
+	
 	
 	return (0);
 }
